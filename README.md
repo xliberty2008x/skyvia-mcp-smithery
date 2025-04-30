@@ -103,6 +103,45 @@ const result = await client.useToolWithMCP("run_integration", {
 console.log(result);
 ```
 
+## Troubleshooting
+
+### "Server not initialized" Error
+
+If you receive a "Server not initialized" error when trying to use the server tools, this typically indicates that the server did not properly initialize due to a missing or invalid API token. To resolve this:
+
+1. Verify your Skyvia API token is valid and has the necessary permissions.
+2. Make sure the `SKYVIA_API_TOKEN` environment variable is properly set:
+   - For local testing, use `export SKYVIA_API_TOKEN="your-token-here"`
+   - For Smithery deployment, ensure the token is correctly set in your Smithery profile
+
+### Diagnosing Connection Issues
+
+The repository includes a dedicated diagnostic script for testing connectivity:
+
+```bash
+# Set your API token
+export SKYVIA_API_TOKEN="your-token-here"
+
+# Optionally set your Smithery API key (if using a different one)
+export SMITHERY_API_KEY="your-smithery-api-key"
+
+# Run the diagnostic script
+python test_smithery_connection.py
+```
+
+This script will:
+- Test direct connection to a locally running server
+- Test connection to the Smithery-deployed server
+- Provide detailed logs and troubleshooting guidance
+- Compare results to help isolate if the issue is with Smithery configuration or the server itself
+
+### Common Issues
+
+1. **Missing Dependencies**: Ensure you've installed all required packages with `pip install -r requirements.txt`
+2. **Invalid API Token**: The token may be expired or have insufficient permissions
+3. **Smithery Profile Issue**: If using Smithery, check that your profile has the correct configuration with the API token
+4. **Networking Issues**: If behind a corporate firewall, check if websocket connections are allowed
+
 ## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.

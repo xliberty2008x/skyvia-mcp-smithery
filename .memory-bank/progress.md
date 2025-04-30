@@ -90,9 +90,20 @@
 
 ### Fix Implemented
 - Added a check in `main.py`'s `handle_request` function to verify `self.client` is initialized before allowing `tools/use` requests.
-- If the client is not initialized, the server now returns a specific MCP error (code 503) indicating the server isn't ready, likely due to a missing API token or other initialization failure.
+- If the client is not initialized, the server now returns a specific MCP error (code -32000) indicating the server isn't ready, likely due to a missing API token or other initialization failure.
+- Improved error message to explicitly recommend checking if SKYVIA_API_TOKEN is set and valid.
+
+### Enhanced Testing Tools
+- Created `test_smithery_connection.py` script to specifically test and diagnose Smithery connection issues.
+- The test script includes:
+  - Detailed logging of each connection step
+  - Comprehensive error handling with stack traces
+  - Tests both Smithery web socket connection and direct local connection for comparison
+  - Provides clear troubleshooting steps based on test results
 
 ### Next Steps
-- Commit and push the fix to GitHub.
+- Commit and push the fixes to GitHub.
+- Test the server using the new test script with proper API token.
+- Verify that the Smithery profile has the correct API token configuration.
 - Ask user to restart the server connection in Cline.
 - Retry testing tools via Cline MCP.

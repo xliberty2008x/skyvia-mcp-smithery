@@ -451,15 +451,17 @@ class MCPServer:
             elif request.get("type") == "tools/use":
                 tool_name = request.get("name")
                 tool_args = request.get("arguments", {})
-
-                # --- START ADDED CHECK ---
-                # Check if client was initialized *before* trying to use it
+                
+                # Check if client was initialized before trying to use it
                 if not self.client:
-                    # Return an MCP error response if the client wasn't set up (likely due to initialization failure)
-                    return self._create_error_response(request_id, client_id, 
-                                                       "Server not properly initialized. Check API token or server logs.", 
-                                                       error_code=503) # 503 Service Unavailable is appropriate
-                # --- END ADDED CHECK ---
+                    logger.error("Attempt to use tool before server was properly initialized")
+                    return self._create_error_response(
+                        request_id, 
+                        client_id, 
+                        "Server not initialized. Make sure SKYVIA_API_TOKEN is set and valid.", 
+                        error_code=-32000
+                    )
+
                 
                 if tool_name not in self.tools:
                     return self._create_error_response(request_id, client_id, f"Unknown tool: {tool_name}")
