@@ -58,3 +58,41 @@
 - Prepare project for GitHub.
 - Deploy to Smithery.
 - Test deployed server via Cline.
+
+## 2025-04-30: GitHub Deployment
+
+### Deployment Steps
+- Created GitHub repository at https://github.com/xliberty2008x/skyvia-mcp-smithery.git
+- Updated git configuration to use 'main' as default branch
+- Pushed complete project including:
+  - Dockerfile for containerized deployment
+  - smithery.yaml for Smithery integration
+  - requirements.txt with dependencies
+  - All source code and documentation
+- Verified successful deployment via GitHub repository access
+
+### Post-Deployment Verification
+- Confirmed all necessary files are present in repository
+- Validated Docker build and run commands
+- Confirmed Smithery configuration compatibility
+- Verified memory bank documentation completeness
+
+### Next Steps
+- Monitor GitHub repository for issues
+- Document deployment process in README.md
+- Prepare for production deployment
+- Implement CI/CD pipeline for future updates
+
+## 2025-04-30: Troubleshooting Initialization
+
+### Issue Identified
+- Cline logs indicated "Server not initialized" error when trying to use tools via the connected `skyvia-mcp-smithery` server.
+
+### Fix Implemented
+- Added a check in `main.py`'s `handle_request` function to verify `self.client` is initialized before allowing `tools/use` requests.
+- If the client is not initialized, the server now returns a specific MCP error (code 503) indicating the server isn't ready, likely due to a missing API token or other initialization failure.
+
+### Next Steps
+- Commit and push the fix to GitHub.
+- Ask user to restart the server connection in Cline.
+- Retry testing tools via Cline MCP.

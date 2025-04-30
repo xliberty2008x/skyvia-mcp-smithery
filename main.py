@@ -451,11 +451,21 @@ class MCPServer:
             elif request.get("type") == "tools/use":
                 tool_name = request.get("name")
                 tool_args = request.get("arguments", {})
+
+                # --- START ADDED CHECK ---
+                # Check if client was initialized *before* trying to use it
+                if not self.client:
+                    # Return an MCP error response if the client wasn't set up (likely due to initialization failure)
+                    return self._create_error_response(request_id, client_id, 
+                                                       "Server not properly initialized. Check API token or server logs.", 
+                                                       error_code=503) # 503 Service Unavailable is appropriate
+                # --- END ADDED CHECK ---
                 
                 if tool_name not in self.tools:
                     return self._create_error_response(request_id, client_id, f"Unknown tool: {tool_name}")
                 
-                result = self.tools[tool_name](**tool_args)
+                # Now it's safe to assume self.client exists
+                result = self.tools[tool_name](**tool_args) 
                 return self._create_response(request_id, client_id, result)
             
             # Handle unknown request types
